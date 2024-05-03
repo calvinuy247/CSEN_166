@@ -128,6 +128,28 @@ def breadthFirstSearch(problem):
     You are not required to implement this, but you may find it useful for Q5.
     """
     "*** YOUR CODE HERE ***"
+    visited = []
+    frontier = util.Queue()
+    start_node = Node(problem.getStartState(),None,None,0)
+    frontier.push(start_node)
+    while (not frontier.isEmpty()):
+        curr_node = frontier.pop()
+        if curr_node in visited:
+            continue
+        if problem.goalTest(curr_node):
+            actionsequence = []
+            temp = curr_node
+            while (temp.__ne__(start_node)):
+                actionsequence.append(temp.parent.action)
+                temp = temp.parent
+            return actionsequence
+        else:
+            visited.append(curr_node)
+            curr_actions = problem.getActions(curr_node)
+            for act in curr_actions:
+                new_child = Node(problem.getResult(curr_node.state,act), curr_node, act, curr_node.path_cost + problem.getCost(curr_node,act))
+                frontier.push(new_child)
+                
     util.raiseNotDefined()
     
 def depthFirstSearch(problem): 
