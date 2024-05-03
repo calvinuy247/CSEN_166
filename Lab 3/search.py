@@ -201,16 +201,17 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     #Holds the candidate nodes to be expanded
     frontier = util.PriorityQueue()
     #state, parent, action, path_cost 
-    start_node = Node(problem.getStartState(), None, problem.getActions(), 0)
+    start_node = Node(problem.getStartState(), None, None, 0)
     #Pushing the starting node onto the piority queue
-    frontier.put(start_node, heuristic(start_node, problem))
+    frontier.push(start_node, heuristic(start_node, problem))
     while (not frontier.isEmpty()):
+        #Retrieiving the node with the highest priority
         curr_node = frontier.pop()
 
         #We skip because we already expanded through it
         if curr_node in visited:
             continue
-        if problem.goal_test(curr_node):
+        if problem.goalTest(curr_node):
             actionsequence = []
             temp = curr_node
             #Going to parent of child over and over again until we hit start_node
@@ -222,7 +223,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         else:
             #Not the goal state so need to process the current node -> expand it
             visited.append(curr_node)
-
             curr_actions = problem.getActions(curr_node)
             for act in curr_actions:
                 new_child = Node(problem.getResult(curr_node.state, act), curr_node, act, curr_node.path_cost + problem.getCost(curr_node.act))
