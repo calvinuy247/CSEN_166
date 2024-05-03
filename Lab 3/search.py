@@ -128,27 +128,33 @@ def breadthFirstSearch(problem):
     You are not required to implement this, but you may find it useful for Q5.
     """
     "*** YOUR CODE HERE ***"
-    visited = []
+    # for graph search, implement a visited set to not loop nodes
+    visited = set()
+    # define frontier as a queue
     frontier = util.Queue()
-    start_node = Node(problem.getStartState(),None,None,0)
+    start_node = Node(problem.getStartState(), None, None, 0)
     frontier.push(start_node)
-    while (not frontier.isEmpty()):
-        curr_node = frontier.pop()
-        if curr_node in visited:
+
+    while(not frontier.isEmpty()):
+        cur_node = frontier.pop()
+        if cur_node.state in visited:
             continue
-        if problem.goalTest(curr_node):
+        # check if current node is goal node
+        if problem.goalTest(cur_node.state):
             actionsequence = []
-            temp = curr_node
-            while (temp.__ne__(start_node)):
-                actionsequence.append(temp.parent.action)
+            temp = cur_node
+            while(temp.__ne__(start_node)):
+                actionsequence.append(temp.action)
                 temp = temp.parent
-            return actionsequence
+            return actionsequence[::-1]
         else:
-            visited.append(curr_node)
-            curr_actions = problem.getActions(curr_node)
-            for act in curr_actions:
-                new_child = Node(problem.getResult(curr_node.state,act), curr_node, act, curr_node.path_cost + problem.getCost(curr_node,act))
-                frontier.push(new_child)
+            # if node in frontier isn't visited, add to visited
+            visited.add(cur_node.state)
+            cur_actions = problem.getActions(cur_node.state)
+            # adding child nodes into frontier to visit
+            for act in cur_actions:
+                child_node = Node(problem.getResult(cur_node.state, act), cur_node, act, cur_node.path_cost + problem.getCost(cur_node.state, act))
+                frontier.push(child_node)
                 
     util.raiseNotDefined()
     
