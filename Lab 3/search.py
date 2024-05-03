@@ -202,37 +202,38 @@ def UniformCostSearch(problem):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    #Holds previously visited nodes
-    visited = []
+    visited = set()
     #Holds the candidate nodes to be expanded
     frontier = util.PriorityQueue()
     #state, parent, action, path_cost 
     start_node = Node(problem.getStartState(), None, None, 0)
     #Pushing the starting node onto the piority queue
-    frontier.push(start_node, heuristic(start_node, problem))
+    frontier.push(start_node, heuristic(start_node.state, problem))
     while (not frontier.isEmpty()):
         #Retrieiving the node with the highest priority
         curr_node = frontier.pop()
 
         #We skip because we already expanded through it
-        if curr_node in visited:
+        if curr_node.state in visited:
             continue
-        if problem.goalTest(curr_node):
+        if problem.goalTest(curr_node.state):
             actionsequence = []
             temp = curr_node
             #Going to parent of child over and over again until we hit start_node
             while (temp.__ne__(start_node)):
-                actionsequence.append(temp.parent.action)
+                actionsequence.append(temp.action)
                 temp = temp.parent
             #Returns the reverse of the actionsequence -> path to the the goal state
-            return actionsequence.reverse()
+            return actionsequence[::-1]
         else:
             #Not the goal state so need to process the current node -> expand it
-            visited.append(curr_node)
-            curr_actions = problem.getActions(curr_node)
+            visited.add(curr_node.state)
+            curr_actions = problem.getActions(curr_node.state)
             for act in curr_actions:
-                new_child = Node(problem.getResult(curr_node.state, act), curr_node, act, curr_node.path_cost + problem.getCost(curr_node.act))
-                frontier.push(new_child)
+                new_child = Node(problem.getResult(curr_node.state, act), curr_node, act, curr_node.path_cost + problem.getCost(curr_node.state, act))
+                # calculating f given g and h 
+                priority = curr_node.path_cost + problem.getCost(curr_node.state, act) + heuristic(problem.getResult(curr_node.state, act), problem)
+                frontier.push(new_child, priority)
     util.raiseNotDefined()
 
 # Abbreviations
