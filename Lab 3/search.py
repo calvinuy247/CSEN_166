@@ -196,6 +196,37 @@ def UniformCostSearch(problem):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    #Holds previously visited nodes
+    visited = []
+    #Holds the candidate nodes to be expanded
+    frontier = util.PriorityQueue()
+    #state, parent, action, path_cost 
+    start_node = Node(problem.getStartState(), None, problem.getActions(), 0)
+    #Pushing the starting node onto the piority queue
+    frontier.put(start_node, heuristic(start_node, problem))
+    while (not frontier.isEmpty()):
+        curr_node = frontier.pop()
+
+        #We skip because we already expanded through it
+        if curr_node in visited:
+            continue
+        if problem.goal_test(curr_node):
+            actionsequence = []
+            temp = curr_node
+            #Going to parent of child over and over again until we hit start_node
+            while (temp.__ne__(start_node)):
+                actionsequence.append(temp.parent.action)
+                temp = temp.parent
+            #Returns the reverse of the actionsequence -> path to the the goal state
+            return actionsequence.reverse()
+        else:
+            #Not the goal state so need to process the current node -> expand it
+            visited.append(curr_node)
+
+            curr_actions = problem.getActions(curr_node)
+            for act in curr_actions:
+                new_child = Node(problem.getResult(curr_node.state, act), curr_node, act, curr_node.path_cost + problem.getCost(curr_node.act))
+                frontier.push(new_child)
     util.raiseNotDefined()
 
 # Abbreviations
