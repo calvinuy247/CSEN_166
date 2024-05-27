@@ -121,6 +121,24 @@ class QLearningAgent(ReinforcementAgent):
           it will be called on your behalf
         """
         "*** YOUR CODE HERE ***"
+
+        # get max Q(s',a')
+        # ok here im not sure if when i call getqvalue whether im supposed to use state or nextstate
+        # it references the gamma*max(Q(s',a')) from slides/pdf
+        max_next_q = 0
+        for next_action in self.getLegalActions(nextstate):
+          if self.getQValue(nextState, next_action) > max_next_q:
+            max_next_q = self.getQValue(nextState, next_action)
+
+        # create sample variable
+        # not sure where to get reward values
+        sample = reward + self.discount * (max_next_q)
+
+        # update Q value
+        self.qvalues[(state,action)] = ((1-self.alpha) * self.getQValue(state,action)) + (self.alpha*(sample))
+        #OR
+        #self.qvalues[(state,action)] = self.getQValue(state,action) + self.alpha*(sample - self.getQValue(state,action))
+      
         #util.raiseNotDefined()
         
         # self.qvalues[(state,action)] = ...
