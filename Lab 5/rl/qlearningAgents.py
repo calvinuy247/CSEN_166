@@ -63,12 +63,24 @@ class QLearningAgent(ReinforcementAgent):
         """
         "*** YOUR CODE HERE ***"
         #util.raiseNotDefined()
+
+        # just filled in what the comments at bottom that were already in file
+        # instructed, makes sense to me just seemed a little too easy...
+        
         if (state,action) in self.qvalues: # (state,action) is the key; (s,a) is the key (s,a): 0.5
             # return the associated q-value
             test = 0 # just for testing
             return self.qvalues[(state,action)]
+
         else:
             test = 0 # just for testing
+
+            # add this (s,a) pair to dictionary and set its q value to 0
+            self.qvalues[(state,action)] = 0
+            
+            # return its value which is 0
+            return self.qvalues[(state,action)]
+
             # update the dictionary self.qvalues with this unseen (s,a) and initialize its value as 0.0
             # self.qvalues[(s,a)]=0.0
             # return this q-value     
@@ -122,16 +134,15 @@ class QLearningAgent(ReinforcementAgent):
         """
         "*** YOUR CODE HERE ***"
 
-        # get max Q(s',a')
-        # ok here im not sure if when i call getqvalue whether im supposed to use state or nextstate
+        # get max Q(s',a') 
         # it references the gamma*max(Q(s',a')) from slides/pdf
+        # can q values be negative? and then should max not start at 0? then what do I start it at?
         max_next_q = 0
         for next_action in self.getLegalActions(nextstate):
           if self.getQValue(nextState, next_action) > max_next_q:
             max_next_q = self.getQValue(nextState, next_action)
 
         # create sample variable
-        # not sure where to get reward values
         sample = reward + self.discount * (max_next_q)
 
         # update Q value
