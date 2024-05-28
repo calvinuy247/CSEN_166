@@ -64,8 +64,8 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         #util.raiseNotDefined()
 
-        # just filled in what the comments at bottom that were already in file
-        # instructed, makes sense to me just seemed a little too easy...
+        # just filled in what the comments at bottom that were already in file instructed
+        # makes sense to me
         
         if (state,action) in self.qvalues: # (state,action) is the key; (s,a) is the key (s,a): 0.5
             # return the associated q-value
