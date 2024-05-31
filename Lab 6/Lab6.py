@@ -6,7 +6,9 @@ import numpy as np
 
 #Loading the dataset
 fashion_mnist = keras.datasets.fashion_mnist
-(x_train, y_train),(x_test,y_test) = fashion_mnist.load_data()
+
+#y_train = training labels || y_test = test labels
+(x_train,y_train),(x_test,y_test) = fashion_mnist.load_data()
 
 #Normalize the pixel values to be in [0,1]
 x_train,x_test = x_train/255.0,x_test/255.0
@@ -14,6 +16,9 @@ x_train,x_test = x_train/255.0,x_test/255.0
 
 #1a: Select one image from each class of the dataset to display as a grey-scale image
 import matplotlib.pyplot as plt
+
+
+
 plt.imshow(x_test[19,:,:], cmap='gray', vmin=0, vmax=1)
 plt.show()
 ### Need to finish this section, going to see if there are any tips during lab intro. ###
@@ -24,7 +29,7 @@ model = models.Sequential()
 
 #Adding layers
 #Note we need to flatten the image to a vector, to serve as the input layer of the network
-model.add(layers.Flatten())
+model.add(layers.Flatten(28x28))
 
 #Creating the hidden layer with 512 nodes and ReLU activation function
 model.add(layers.Dense(512, activation='relu'))
@@ -50,7 +55,7 @@ print(accuracy)
 #Calculating the model's predicted probalilty 
 predProbablility = model.predict(x_test)
 
-#y_test_hat -> predicted value
+#y_test_hat = predicted value, using argmax() to find the class with the highest probability
 y_test_hat = np.argmax(predProbablility, axis=1)
 
 #2a: Give the recognition accuracy rate of the test set, and show the confusion matrix
