@@ -35,9 +35,9 @@ for image in range(len(x_test)):
 plt.figure(figsize=(10,10))
 for image in range(10):
     plt.subplot(1, 10, image+1)
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
+    plt.xticks([]) #Removing X-axis tick marks
+    plt.yticks([]) #Removing Y-axis tick marks
+    plt.grid(False) #Removing the grid lines
     plt.imshow(imagesEachClass[image], cmap='gray', vmin=0, vmax=1)
     plt.xlabel(classes[image])
 plt.show()
