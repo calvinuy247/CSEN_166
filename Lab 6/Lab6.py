@@ -70,7 +70,7 @@ y_test_hat = np.argmax(predProbablility, axis=1)
 
 #Calculating the test's loss and accuracy
 loss, accuracy = model.evaluate(x_test, y_test)
-print(accuracy)
+print(f"The recognition accuracy rate is {accuracy}")
 
 #Creating and plotting the confusion matrix
 from sklearn.metrics import ConfusionMatrixDisplay
